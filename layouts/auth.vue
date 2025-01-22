@@ -1,14 +1,9 @@
 <script setup>
-const isDark = ref(false)
-
-const toggleDarkMode = () => {
-    isDark.value = !isDark.value
-    document.documentElement.classList.toggle('dark')
-}
-
 const handleLogout = () => {
     // Add logout logic here
-    console.log('Logging out...')
+    navigateTo({
+        name: 'login'
+    })
 }
 
 const navigation = [
@@ -59,7 +54,6 @@ const navigation = [
                 <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200 dark:border-gray-700">
                     <button @click="handleLogout"
                         class="flex items-center w-full px-4 py-3 text-gray-700 dark:text-gray-300 rounded-lg transition-all duration-150 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 hover:shadow-sm">
-                        <IconLogout class="w-5 h-5" />
                         <span class="ml-3 font-medium">Logout</span>
                     </button>
                 </div>
@@ -74,7 +68,7 @@ const navigation = [
                 <div class="flex items-center justify-between px-6 h-full">
                     <!-- Search Bar -->
                     <div class="flex-1 max-w-xl">
-                        {{ $route.path.split('/')[2].toUpperCase().replace('-', ' ') }}
+                        {{ $route.path.split('/')[2]?.toUpperCase()?.replace('-', ' ') }}
                     </div>
 
                     <!-- Right Header Items -->

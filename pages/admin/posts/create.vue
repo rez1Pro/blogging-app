@@ -2,7 +2,8 @@
 import { ref } from 'vue'
 
 definePageMeta({
-    layout: 'auth'
+    layout: 'auth',
+    middleware: ['auth']
 })
 const form = ref({
     title: '',

@@ -52,40 +52,48 @@ const formatDate = (dateString) => {
         </p>
 
         <!-- Featured Article -->
-        <article class="grid lg:grid-cols-2 gap-12 lg:gap-8 mb-20">
-            <img :src="featuredArticle.imageUrl" alt="Team Building" class="w-full h-[400px] object-cover rounded-lg" />
-            <div class="flex flex-col">
-                <span class="text-sm text-gray-500 mb-4">{{ formatDate(featuredArticle.date) }}</span>
-                <h2 class="text-4xl font-bold text-gray-900 mb-6 md:text-3xl">{{ featuredArticle.title }}</h2>
-                <p class="text-gray-500 leading-relaxed mb-6">
-                    {{ featuredArticle.content }}
-                </p>
-                <div class="flex justify-between items-center mt-auto">
-                    <span class="text-sm text-gray-500">{{ featuredArticle.category }}</span>
+        <article
+            class="grid lg:grid-cols-2 gap-12 lg:gap-8 mb-20 bg-white rounded-2xl shadow-sm p-8 hover:shadow-md transition-shadow">
+            <img :src="featuredArticle.imageUrl" alt="Team Building"
+                class="w-full h-[380px] object-cover rounded-l-2xl shadow-sm" />
+            <div class="flex flex-col justify-between h-full">
+                <div class="space-y-4">
+                    <span class="text-sm text-gray-600">{{ formatDate(featuredArticle.date) }}</span>
+                    <h2 class="text-2xl font-bold text-gray-900 leading-tight">{{ featuredArticle.title }}</h2>
+                    <p class="text-gray-600 text-base leading-relaxed">
+                        {{ featuredArticle.content }}
+                    </p>
+                </div>
+                <div class="flex justify-between items-center pt-6">
+                    <span class="text-sm font-medium text-gray-600">{{ featuredArticle.category }}</span>
                     <NuxtLink :to="{ name: 'post-id', params: { id: featuredArticle.id } }"
-                        class="text-gray-900 font-medium no-underline">Read →</NuxtLink>
+                        class="text-gray-900 font-semibold hover:text-gray-700 transition-colors flex items-center gap-2">
+                        Read <span class="text-lg leading-none">→</span>
+                    </NuxtLink>
                 </div>
             </div>
         </article>
 
         <!-- Popular Articles Section -->
         <section class="mb-20">
-            <h2 class="text-2xl font-bold text-gray-900 mb-8">Popular Articles</h2>
+            <h2 class="text-[32px] font-bold text-gray-900 mb-12">Popular Articles</h2>
             <div class="grid lg:grid-cols-3 md:grid-cols-2 gap-8">
-                <article v-for="article in popularArticles" :key="article.id" class="rounded-lg overflow-hidden">
-                    <div class="relative h-60">
-                        <span class="absolute top-4 left-4 bg-white px-2 py-1 rounded text-xs font-medium">
+                <article v-for="article in popularArticles" :key="article.id"
+                    class="rounded-2xl overflow-hidden bg-white shadow-sm">
+                    <div class="relative h-[260px]">
+                        <span
+                            class="absolute top-6 right-6 bg-white/90 px-4 py-2 rounded-full text-sm font-medium uppercase">
                             {{ article.category }}
                         </span>
                         <img :src="article.imageUrl" :alt="article.title" class="w-full h-full object-cover" />
                     </div>
-                    <div class="pt-6">
-                        <span class="text-sm text-gray-500">{{ formatDate(article.date) }}</span>
-                        <h3 class="text-xl font-bold text-gray-900 my-2">
-                            <NuxtLink :to="{ name: 'post-id', params: { id: article.id } }">{{ article.title
-                                }}</NuxtLink>
+                    <div class="p-8">
+                        <span class="text-sm text-gray-600">{{ formatDate(article.date) }}</span>
+                        <h3 class="text-2xl font-bold text-gray-900 mt-4 mb-6 hover:text-gray-700 transition-colors">
+                            <NuxtLink :to="{ name: 'post-id', params: { id: article.id } }">{{ article.title }}
+                            </NuxtLink>
                         </h3>
-                        <p class="text-sm text-gray-500 leading-relaxed">
+                        <p class="text-base text-gray-600 leading-relaxed">
                             {{ article.excerpt }}
                         </p>
                     </div>

@@ -4,6 +4,7 @@ const newCategory = ref('')
 
 definePageMeta({
     layout: 'auth',
+    middleware: ['auth']
 })
 
 // Function to fetch categories

@@ -1,30 +1,41 @@
+<script setup>
+import menu from '~/public/svg/menu.svg'
+import user from '~/public/svg/user.svg'
+</script>
 <template>
-    <header class="flex justify-between items-center py-6 border-b border-gray-200">
-        <div class="flex items-center gap-8">
-            <img src="https://placehold.co/200x50?text=Events+in+Minutes" alt="Events in Minutes" class="logo" />
-            <a href="tel:+1(628)587-3235" class="flex items-center gap-2 text-sm text-gray-900 no-underline">
-                <img src="https://raw.githubusercontent.com/primer/octicons/main/icons/device-mobile-16.svg"
-                    alt="Phone" />
-                +1 (628) 587-3235
-            </a>
-        </div>
-        <div class="flex items-center gap-6">
-            <nav>
-                <a href="#" class="text-sm text-gray-900 no-underline mr-6">Top Vendors</a>
-                <a href="#" class="text-sm text-gray-900 no-underline">Apply Now!</a>
-            </nav>
-            <button>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-                    <path
-                        d="M1 2.75A.75.75 0 0 1 1.75 2h12.5a.75.75 0 0 1 0 1.5H1.75A.75.75 0 0 1 1 2.75Zm0 5A.75.75 0 0 1 1.75 7h12.5a.75.75 0 0 1 0 1.5H1.75A.75.75 0 0 1 1 7.75ZM1.75 12h12.5a.75.75 0 0 1 0 1.5H1.75a.75.75 0 0 1 0-1.5Z" />
-                </svg>
-            </button>
-            <NuxtLink :to="{ name: 'login' }">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-                    <path
-                        d="M10.561 8.073a6.005 6.005 0 0 1 3.432 5.142.75.75 0 1 1-1.498.07 4.5 4.5 0 0 0-8.99 0 .75.75 0 0 1-1.498-.07 6.004 6.004 0 0 1 3.431-5.142 3.999 3.999 0 1 1 5.123 0ZM10.5 5a2.5 2.5 0 1 0-5 0 2.5 2.5 0 0 0 5 0Z" />
-                </svg>
-            </NuxtLink>
+    <header class="sticky top-0 bg-white z-50 border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 flex justify-between items-center h-20">
+            <div class="flex items-center gap-8">
+                <NuxtLink to="/" class="flex-shrink-0">
+                    <img src="/svg/logo.svg" alt="Events in Minutes" class="h-8 w-auto" />
+                </NuxtLink>
+                <a href="tel:+1(628)587-3235"
+                    class="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition-colors">
+                    <svg class="w-4 h-4" viewBox="0 0 16 16" fill="currentColor">
+                        <path
+                            d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.568 17.568 0 0 0 4.168 6.608 17.569 17.569 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.678.678 0 0 0-.58-.122l-2.19.547a1.745 1.745 0 0 1-1.657-.459L5.482 8.062a1.745 1.745 0 0 1-.46-1.657l.548-2.19a.678.678 0 0 0-.122-.58L3.654 1.328zM1.884.511a1.745 1.745 0 0 1 2.612.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z" />
+                    </svg>
+                    +1 (628) 587-3235
+                </a>
+            </div>
+
+            <div class="flex items-center gap-8">
+                <nav class="hidden md:flex items-center gap-8">
+                    <button class="text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors">
+                        Top Vendors,
+                        Apply Now!
+                    </button>
+                </nav>
+
+                <div class="flex items-center gap-4 rounded-full bg-gray-100 p-2">
+                    <button class="hover:bg-gray-100 rounded-full transition-colors">
+                        <img :src="menu" alt="Menu" class="w-6 h-6" />
+                    </button>
+                    <NuxtLink :to="{ name: 'login' }" class="hover:bg-gray-100 rounded-full transition-colors">
+                        <img :src="user" alt="User" class="w-6 h-6" />
+                    </NuxtLink>
+                </div>
+            </div>
         </div>
     </header>
 </template>
