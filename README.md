@@ -22,8 +22,7 @@ A RESTful API built with Laravel for managing blog posts and categories.
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
-cd <project-directory>
+https://github.com/rez1Pro/blogging-app.git
 ```
 
 2. Install dependencies:
