@@ -1,30 +1,18 @@
 <script setup>
 definePageMeta({
     layout: 'auth',
-    middleware: ['auth']
+    middleware: 'auth'
 })
 
-const posts = ref([
-    {
-        id: 1,
-        title: 'Making Your Virtual Events More Engaging',
-        excerpt: 'Learn the latest techniques and tools...',
-        category: 'Virtual Events',
-        status: 'published',
-        date: '2024-03-15',
-        imageUrl: '/img/blog-2.jpeg'
-    },
-    {
-        id: 2,
-        title: 'Top Trends in Corporate Event Design',
-        excerpt: 'Discover the latest trends in...',
-        category: 'Corporate Events',
-        status: 'draft',
-        date: '2024-03-14',
-        imageUrl: '/img/blog-1.jpeg'
-    },
-    // Add more dummy posts as needed
-])
+const page = ref(1)
+const search = ref("")
+
+const { data: posts, refresh, processing } = await useApi(() => `posts?page=${page.value}&filter[title]=${search.value}`, {
+    // onTransform(data) {
+    //     console.log(data)
+    //     return data
+    // }    
+})
 
 const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -34,9 +22,24 @@ const formatDate = (dateString) => {
     })
 }
 
-definePageMeta({
-    layout: 'auth'
-})
+const columns = [
+    { key: 'title', label: 'Title' },
+    { key: 'category', label: 'Category' },
+    { key: 'is_published', label: 'Published' },
+    { key: 'published_at', label: 'Published At' },
+    { key: 'actions', label: 'Actions' }
+]
+
+const handleEdit = (post) => {
+    // Add edit logic here
+    console.log('Edit post:', post)
+}
+
+const handleDelete = (post) => {
+    // Add delete logic here
+    console.log('Delete post:', post)
+}
+
 </script>
 <template>
     <div class="p-6 lg:p-8">
@@ -46,10 +49,6 @@ definePageMeta({
                 <h1 class="text-2xl font-semibold text-gray-800">Posts</h1>
                 <p class="mt-1 text-sm text-gray-600">Manage your blog posts</p>
             </div>
-            <NuxtLink :to="{ name: 'admin-posts-create' }"
-                class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700">
-                Create Post
-            </NuxtLink>
         </div>
 
         <!-- Table Card -->
@@ -58,104 +57,53 @@ definePageMeta({
             <div class="p-4 border-b border-gray-200">
                 <div class="flex items-center justify-between gap-4">
                     <div class="flex-1 max-w-xs">
-                        <input type="text" placeholder="Search posts..."
+                        <input type="text" placeholder="Search posts..." v-model="search"
                             class="w-full px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
                     </div>
                     <div class="flex items-center gap-4">
-                        <select
-                            class="px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                            <option value="">All Categories</option>
-                            <option value="technology">Technology</option>
-                            <option value="lifestyle">Lifestyle</option>
-                            <option value="travel">Travel</option>
-                        </select>
-                        <select
-                            class="px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                            <option value="">All Status</option>
-                            <option value="published">Published</option>
-                            <option value="draft">Draft</option>
-                        </select>
+                        <NuxtLink :to="{ name: 'admin-posts-create' }"
+                            class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700">
+                            Create Post
+                        </NuxtLink>
                     </div>
                 </div>
             </div>
 
-            <!-- Table -->
-            <div class="overflow-x-auto">
-                <table class="w-full">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Title
-                            </th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Category
-                            </th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Status
-                            </th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Date
-                            </th>
-                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Actions
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
-                        <tr v-for="post in posts" :key="post.id" class="hover:bg-gray-50">
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="flex items-center">
-                                    <img :src="post.imageUrl" :alt="post.title"
-                                        class="h-10 w-10 rounded-lg object-cover mr-3" />
-                                    <div>
-                                        <div class="text-sm font-medium text-gray-900">{{ post.title }}</div>
-                                        <div class="text-sm text-gray-500">{{ post.excerpt }}</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span
-                                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-                                    {{ post.category }}
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span
-                                    :class="[post.status === 'published' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800', 'px-2 inline-flex text-xs leading-5 font-semibold rounded-full']">
-                                    {{ post.status }}
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                {{ formatDate(post.date) }}
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <div class="flex justify-end gap-3">
-                                    <button class="text-blue-600 hover:text-blue-900">Edit</button>
-                                    <button class="text-red-600 hover:text-red-900">Delete</button>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <BaseDataTable :loading="processing" :columns="columns" :items="posts ?? []"
+                @page-change="(pageNum) => page = pageNum">
+                <template #category="{ item }">
+                    {{ item.category?.name }}
+                </template>
 
-            <!-- Pagination -->
-            <div class="px-6 py-4 border-t border-gray-200">
-                <div class="flex items-center justify-between">
-                    <div class="text-sm text-gray-500">
-                        Showing 1 to 10 of 20 results
+                <template #is_published="{ item }">
+                    {{ item.is_published ? 'Yes' : 'No' }}
+                </template>
+
+                <template #published_at="{ item }">
+                    {{ formatDate(item.published_at) }}
+                </template>
+                <!-- you can cusotmize your table here -->
+                <template #actions="{ item }">
+                    <div class="flex justify-end gap-2">
+                        <button @click="handleEdit(item)"
+                            class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 rounded-md transition-colors duration-200">
+                            <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                            </svg>
+                            Edit
+                        </button>
+                        <button @click="handleDelete(item)"
+                            class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-red-600 hover:text-red-800 bg-red-50 hover:bg-red-100 rounded-md transition-colors duration-200">
+                            <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                            Delete
+                        </button>
                     </div>
-                    <div class="flex gap-2">
-                        <button
-                            class="px-3 py-1 text-sm border border-gray-300 rounded-md hover:bg-gray-50">Previous</button>
-                        <button
-                            class="px-3 py-1 text-sm text-white bg-blue-600 border border-blue-600 rounded-md hover:bg-blue-700">1</button>
-                        <button class="px-3 py-1 text-sm border border-gray-300 rounded-md hover:bg-gray-50">2</button>
-                        <button
-                            class="px-3 py-1 text-sm border border-gray-300 rounded-md hover:bg-gray-50">Next</button>
-                    </div>
-                </div>
-            </div>
+                </template>
+            </BaseDataTable>
         </div>
     </div>
 </template>

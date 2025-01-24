@@ -1,21 +1,24 @@
-<script setup>
+<script setup lang="ts">
+import { useRoute } from 'vue-router';
+
 definePageMeta({
     layout: "guest",
+    middleware: 'guest'
 })
-const email = ref('rezwan@gmail.com')
-const password = ref('123456')
+
+const route = useRoute()
+const form = useForm({
+    email: 'sajib@gmail.com',
+    password: 'password'
+})
 
 const handleLogin = async () => {
-    try {
-        // Add your login logic here
-        console.log('Login attempt with:', { email: email.value, password: password.value })
-
-        return navigateTo({
-            name: "admin-posts-create"
-        })
-    } catch (error) {
-        console.error('Login error:', error)
-    }
+    await form.post('login', {
+        onSuccess: (response) => {
+            localStorage.setItem('token', response.token)
+            navigateTo(route.query.redirect as string || '/admin/posts')
+        }
+    })
 }
 </script>
 
@@ -31,23 +34,20 @@ const handleLogin = async () => {
                 <div class="rounded-md shadow-sm space-y-4">
                     <div>
                         <label for="email" class="sr-only">Email address</label>
-                        <input id="email" v-model="email" type="email" required
-                            class="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                            placeholder="Email address" />
+                        <BaseInput id="email" v-model="form.email" type="email" required placeholder="Email address" />
+
                     </div>
                     <div>
                         <label for="password" class="sr-only">Password</label>
-                        <input id="password" v-model="password" type="password" required
-                            class="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                        <BaseInput id="password" v-model="form.password" type="password" required
                             placeholder="Password" />
                     </div>
                 </div>
 
                 <div>
-                    <button type="submit"
-                        class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    <BasePrimaryButton type="submit" :disabled="form.processing">
                         Sign in
-                    </button>
+                    </BasePrimaryButton>
                 </div>
             </form>
         </div>

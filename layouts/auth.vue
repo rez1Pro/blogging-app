@@ -1,6 +1,14 @@
-<script setup>
-const handleLogout = () => {
-    // Add logout logic here
+<script setup lang="ts">
+const handleLogout = async () => {
+    // logout logic here
+    // localStorage.removeItem('token')
+
+    (await useForm({})).post('logout', {
+        onSuccess() {
+            localStorage.removeItem('token')
+        }
+    })
+
     navigateTo({
         name: 'login'
     })
